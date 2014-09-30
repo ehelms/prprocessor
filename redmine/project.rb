@@ -12,6 +12,14 @@ class Project < RedmineResource
     get("#{@raw_data['project']['id']}/versions")
   end
 
+  def get_issues(params = {})
+    get("#{@raw_data['project']['id']}/issues", params)
+  end
+
+  def get_issues_for_release(id)
+    get_issues(:release_id => id, :limit => 200, :status_id => "*")
+  end
+
   def current_version
     versions = get_versions['versions']
     versions = versions.select { |version| version['due_date'] }

@@ -1,0 +1,77 @@
+<div class="fluid-container table-container">
+
+  <div class="row">
+    <h2 class="col-md-5">Foreman 1.7 & Katello 2.1</h2>
+    <h2 ng-show="release.working"><i class="fa fa-spinner fa-spin"></i>Working...</h2>
+  </div>
+
+  <ul class="nav nav-tabs nav-tabs-pf nav-justified">
+    <li ng-class="{active: release.type === 'open'}"><a ng-click="release.setType('open')">Open</a></li>
+    <li ng-class="{active: release.type === 'closed'}"><a ng-click="release.setType('closed')">Closed</a></li>
+  </ul>
+
+  <table ng-show="release.type === 'open'" class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Compare</th>
+        <th>Issue</th>
+        <th>Bugzilla</th>
+        <th>Status</th>
+        <th>Tracker</th>
+        <th>Category</th>
+        <th>Assigned</th>
+        <th>PR</th>
+        <th class="align-left">Subject</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="issue in release.issues | filter:release.openIssue">
+        <td>{{ issue.project.name }}</td>
+        <td><a ng-href="/dashboard/issues/{{ issue.id }}"><i title="View Comparison" class="fa fa-copy"></i></a></td>
+        <td><a href="http://projects.theforeman.org/issues/{{ issue.id }}">{{ issue.id }}</a></td>
+        <td><a href="https://bugzilla.redhat.com/show_bug.cgi?id={{ issue.custom_fields[2].value }}">{{ issue.custom_fields[2].value }}</a></td>
+        <td>{{ issue.status.name }}</td>
+        <td>{{ issue.tracker.name }}</td>
+        <td>{{ issue.category.name }}</td>
+        <td>{{ issue.assigned_to.name }}</td>
+        <td><a ng-href="{{ issue.custom_fields[3].value }}" ng-if="issue.custom_fields[3].value !== '' && issue.tracker.name !== 'Tracker'"><i class="fa fa-compress"></i></td>
+        <td class="align-left">{{ issue.subject }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table ng-show="release.type === 'closed'" class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Compare</th>
+        <th>Issue</th>
+        <th>Bugzilla</th>
+        <th>Status</th>
+        <th>Tracker</th>
+        <th>Category</th>
+        <th>Assigned</th>
+        <th>PR</th>
+        <th class="align-left">Subject</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="issue in release.issues | filter:release.closedIssue">
+        <td>{{ issue.project.name }}</td>
+        <td><a ng-href="/dashboard/issues/{{ issue.id }}"><i title="View Comparison" class="fa fa-copy"></i></a></td>
+        <td><a href="http://projects.theforeman.org/issues/{{ issue.id }}">{{ issue.id }}</a></td>
+        <td><a href="https://bugzilla.redhat.com/show_bug.cgi?id={{ issue.custom_fields[2].value }}">{{ issue.custom_fields[2].value }}</a></td>
+        <td>{{ issue.status.name }}</td>
+        <td>{{ issue.tracker.name }}</td>
+        <td>{{ issue.category.name }}</td>
+        <td>{{ issue.assigned_to.name }}</td>
+        <td><a ng-href="{{ issue.custom_fields[3].value }}" ng-if="issue.custom_fields[3].value !== ''"><i class="fa fa-compress"></i></td>
+        <td class="align-left">{{ issue.subject }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

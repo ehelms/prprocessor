@@ -1,0 +1,104 @@
+<div class="fluid-container table-container" ng-if="!release.user.username">
+  <div class="alert alert-info">You must be logged in as your Bugzilla user to use this page, <a href="/login">Login</a></div>
+</div>
+
+<div class="fluid-container table-container" ng-if="release.user.username">
+
+  <div class="row">
+    <h2 class="col-md-5">Satellite {{ release.release }}</h2>
+    <h2 ng-show="release.working"><i class="fa fa-spinner fa-spin"></i>Working...</h2>
+  </div>
+
+  <form class="well form-horizontal">
+
+    <div style="float:right;">
+      <a ng-href="{{ release.queryLink() }}">View in Bugzilla</a>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-1">Release: </label>
+      <div class="col-sm-2">
+        <input ng-model="release.release" ng-change="release.releaseChanged(release.release)" class="form-control"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label col-sm-1">State: </label>
+      <div class="col-sm-2">
+        <select ng-model="release.state" ng-change="release.stateChanged(release.state)" ng-disabled="release.release === ''" class="form-control">
+          <option value="blocker">Blocker (blocker+ {{ release.release }}+)</option>
+          <option value="approved">Approved ({{ release.release }}+)</option>
+          <option value="pending">Pending Approval ({{ release.release }}?)</option>
+        </select>
+      </div>
+    </div>
+
+  </form>
+
+  <ul class="nav nav-tabs nav-justified">
+    <li ng-class="{active: release.type === 'open'}"><a ng-click="release.setType('open')">Open Bugs</a></li>
+    <li ng-class="{active: release.type === 'closed'}"><a ng-click="release.setType('closed')">Closed Bugs</a></li>
+  </ul>
+
+  <table ng-show="release.type === 'open'" class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Compare</th>
+        <th>Bugzilla</th>
+        <th>Issue</th>
+        <th>Status</th>
+        <th>Severity</th>
+        <th>Component</th>
+        <th>Assigned To</th>
+        <th>Summary</th>
+        <th>Flags</th>
+      </tr>
+    </thead>
+
+    <tbody infinite-scroll='release.fetchOpenIssues()' infinite-scroll-disabled="release.working" infinite-scroll-distance="3">
+      <tr ng-repeat="bug in release.openIssues">
+        <td><a ng-href="/dashboard/bugzilla/{{ bug.id }}"><i title="View Comparison" class="fa fa-copy"></i></a></td>
+        <td><a ng-href="https://bugzilla.redhat.com/show_bug.cgi?id={{ bug.id }}">{{ bug.id }}</a></td>
+        <td><a ng-href="{{ bug.url }}">{{ bug.url.split('http://projects.theforeman.org/issues/')[1] }}</a></td>
+        <td>{{ bug.status }}</td>
+        <td>{{ bug.severity }}</td>
+        <td><span ng-repeat="component in bug.component">{{ component }}<span ng-if="!$last">,</span></span></td>
+        <td>{{ bug.assigned_to }}</td>
+        <td>{{ bug.summary }}</td>
+        <td><div ng-repeat="flag in bug.flags">{{ flag.name }}: {{ flag.status }}</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table ng-show="release.type === 'closed'" class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Bugzilla</th>
+        <th>Issue</th>
+        <th></th>
+        <th>Status</th>
+        <th>Severity</th>
+        <th>Component</th>
+        <th>Assigned To</th>
+        <th>Summary</th>
+        <th>Flags</th>
+      </tr>
+    </thead>
+
+    <tbody infinite-scroll='release.fetchClosedIssues()' infinite-scroll-disabled="release.working" infinite-scroll-distance="3">
+      <tr ng-repeat="bug in release.closedIssues">
+        <td><a ng-href="https://bugzilla.redhat.com/show_bug.cgi?id={{ bug.id }}">{{ bug.id }}</a></td>
+        <td><a href="{{ bug.url }}">{{ bug.url.split('http://projects.theforeman.org/issues/')[1] }}</a></td>
+        <td><a ng-href="/dashboard/bugzilla/{{ bug.id }}">View Comparison</a></td>
+        <td>{{ bug.status }}</td>
+        <td>{{ bug.severity }}</td>
+        <td><span ng-repeat="component in bug.component">{{ component }}<span ng-if="!$last">,</span></span></td>
+        <td>{{ bug.assigned_to }}</td>
+        <td>{{ bug.summary }}</td>
+        <td><div ng-repeat="flag in bug.flags">{{ flag.name }}: {{ flag.status }}</div></td>
+      </tr>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

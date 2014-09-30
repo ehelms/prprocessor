@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="/assets/css/patternfly.min.css">
+        <link rel="stylesheet" href="/assets/css/font-awesome.css">
+        <link rel="stylesheet" href="/assets/css/dashboard.css">
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script>window.html5 || document.write('<script src="js/vendor/html5shiv.js"><\/script>')</script>
+        <![endif]-->
+    </head>
+    <body ng-app="Dashboard">
+
+      <div class="navbar navbar-default" ng-controller="UserController as user">
+        <div class="container-fluid">
+  
+          <ul class="nav navbar-nav">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/dashboard/upstream">Upstream</a></li>
+            <li><a href="/dashboard/downstream">Downstream</a></li>
+          </ul>          
+          
+          <ul class="nav navbar-right navbar-nav">
+            <li>
+              <span class="username" ng-show="user.user.username !== null">{{ user.user.username }}</span>
+            </li>
+            <li>
+              <a ng-show="user.user.username === null" href="/login" style="float:right;">Bugzilla Login</a>
+              <a ng-show="user.user.username !== null" ng-click="user.logout()" style="float:right;">Logout</a>
+            </li>
+          </ul>          
+
+        </div>
+      </div>
+
+
+      <section ui-view></section>
+
+      <script src="/assets/js/bower_components/jquery.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.js"></script>
+      <script src="/assets/js/bower_components/angular-ui-router.js"></script>
+      <script src="/assets/js/bower_components/ng-infinite-scroll.js"></script>
+      <script src="/assets/js/dashboard.module.js"></script>
+      <script src="/assets/js/dashboard.routes.js"></script>
+      <script src="/assets/js/upstream-release.service.js"></script>
+      <script src="/assets/js/upstream-release.controller.js"></script>
+      <script src="/assets/js/downstream-release.service.js"></script>
+      <script src="/assets/js/downstream-release.controller.js"></script>
+      <script src="/assets/js/issue.controller.js"></script>
+      <script src="/assets/js/bugzilla.controller.js"></script>
+      <script src="/assets/js/login.controller.js"></script>
+      <script src="/assets/js/user.controller.js"></script>
+      <script src="/assets/js/user.service.js"></script>
+      
+    </body>
+</html>

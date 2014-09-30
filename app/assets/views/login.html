@@ -1,0 +1,8 @@
+<form name="loginForm">
+
+  <label>User:</label><input type="text" ng-model="login.user"/>
+  <label>Password:</label><input type="password" ng-model="login.password"/>
+
+  <button ng-click="login.postLogin(login.user, login.password)" class="btn btn-primary">Login</button>
+
+</form>
