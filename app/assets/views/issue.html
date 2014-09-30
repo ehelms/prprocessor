@@ -1,0 +1,106 @@
+<div class="table-container">
+  
+  <ol class="breadcrumb">
+    <li>
+      <a ng-href="{{ issue.priorState }}">Dashboard</a>
+    </li>
+    <li class=active">
+      Issue {{ issue.issue.id }}
+    </li>
+  </ol>
+
+  <table class="table table-bordered">
+    <thead>
+      <th></th>
+      <th>Redmine</th>
+      <th>Bugzilla</th>
+      <th ng-show="issue.clone">Bugzilla Clone</th>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>ID</td>
+        <td><a ng-href="http://projects.theforeman.org/issues/{{ issue.issue.id }}">{{ issue.issue.id }}</a></td>
+        <td><a ng-href="https://bugzilla.redhat.com/show_bug.cgi?id={{ issue.bugzilla.id }}">{{ issue.bugzilla.id }}</a></td>
+        <td ng-show="issue.clone"><a ng-href="https://bugzilla.redhat.com/show_bug.cgi?id={{ issue.clone.id }}">{{ issue.clone.id }}</a></td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>{{ issue.issue.status.name }}</td>
+        <td>{{ issue.bugzilla.status }}</td>
+        <td ng-show="issue.clone">{{ issue.clone.status }}</td>
+      </tr>
+      <tr>
+        <td>Subject</td>
+        <td>{{ issue.issue.subject }}</td>
+        <td>{{ issue.bugzilla.summary }}</td>
+        <td ng-show="issue.clone">{{ issue.clone.summary }}</td>
+      </tr>
+      <tr>
+        <td>Product</td>
+        <td>{{ issue.issue.project.name }}</td>
+        <td>{{ issue.bugzilla.product }}</td>
+        <td ng-show="issue.clone">{{ issue.clone.product }}</td>
+      </tr>
+      <tr>
+        <td>Assigned To</td>
+        <td>{{ issue.issue.assigned_to.name }}</td>
+        <td>{{ issue.bugzilla.assigned_to }}</td>
+        <td ng-show="issue.clone">{{ issue.clone.assigned_to }}</td>
+      </tr>
+      <tr>
+        <td>Component</td>
+        <td>{{ issue.issue.category.name }}</td>
+        <td><span ng-repeat="component in issue.bugzilla.component">{{ component }}<span ng-if="!$last">,</span></span></td>
+        <td ng-show="issue.clone"><span ng-repeat="component in issue.clone.component">{{ component }}<span ng-if="!$last">,</span></span></td>
+      </tr>
+      <tr>
+        <td>Keywords</td>
+        <td></td>
+        <td><span ng-repeat="keyword in issue.bugzilla.keywords">{{ keyword }}<span ng-if="!$last">,</span></span></td>
+        <td ng-show="issue.clone"><span ng-repeat="keyword in issue.clone.keywords">{{ keyword }}<span ng-if="!$last">,</span></span></td>
+      </tr>
+      <tr>
+        <td>Triaged</td>
+        <td>{{ issue.issue.custom_fields[1].value === "1" }}</td>
+        <td>{{ issue.bugzilla.keywords.indexOf("Triaged") > -1 }}</td>
+        <td ng-show="issue.clone">{{ issue.bugzilla.keywords.indexOf("Triaged") > -1 }}</td>
+      </tr>
+      <tr>
+        <td>Severity</td>
+        <td>{{ issue.issue.priority.name }}</td>
+        <td>{{ issue.bugzilla.severity }}</td>
+        <td ng-show="issue.clone">{{ issue.clone.severity }}</td>
+      </tr>
+      <tr>
+        <td>Pull Request</td>
+        <td><a ng-href="{{ issue.issue.custom_fields[3].value }}">{{ issue.issue.custom_fields[3].value }}<a/></td>
+        <td></td>
+        <td ng-show="issue.clone"></td>
+      </tr>
+      <tr>
+        <td>Flags</td>
+        <td></td>
+        <td><div ng-repeat="flag in issue.bugzilla.flags">{{ flag.name }}: {{ flag.status }}</div></td>
+        <td ng-show="issue.clone"><div ng-repeat="flag in issue.clone.flags">{{ flag.name }}: {{ flag.status }}</div></td>
+      </tr>
+      <tr>
+        <td>Comments</td>
+        <td><p>{{ issue.issue.description }}</p></td>
+        <td>
+          <div ng-repeat="comment in issue.bugzilla.comments" style="border-bottom: 1px solid #CCC">
+            <div><label>Author: </label><span>{{ comment.author }}</span></div>
+            <p style="width:500px">{{ comment.text }}</p>
+          </div>
+        </td>
+        <td ng-show="issue.clone">
+          <div ng-repeat="comment in issue.clone.comments" style="border-bottom: 1px solid #CCC">
+            <div><label>Author: </label><span>{{ comment.author }}</span></div>
+            <p style="width:500px">{{ comment.text }}</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

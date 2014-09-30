@@ -6,7 +6,12 @@ require File.join(File.dirname(__FILE__), 'redmine/issue')
 require File.join(File.dirname(__FILE__), 'redmine/project')
 require File.join(File.dirname(__FILE__), 'github/pull_request')
 require File.join(File.dirname(__FILE__), 'jenkins')
+require File.join(File.dirname(__FILE__), 'bugzilla')
 
+set :public_folder, Proc.new { File.join(root, "app") }
+
+enable :sessions
+set :session_secret, 'super secret'
 
 post '/pull_request' do
   request.body.rewind
@@ -52,6 +57,69 @@ get '/status' do
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
 
   erb :status, :locals => locals
+end
+
+get '/user' do
+  content_type :json
+  {:user => session[:user]}.to_json
+end
+
+post '/login' do
+  data = JSON.parse(request.body.read)
+
+  session[:user] = data['user']
+  session[:password] = data['password']
+
+  'success'
+end
+
+post '/logout' do
+  session.clear
+
+  'success'
+end
+
+get '/upstream/release/:project/:id' do
+  project = Project.new(params[:project])
+  issues = project.get_issues_for_release(params[:id])
+
+  content_type :json
+  issues.to_json
+end
+
+get '/downstream/release/:id' do
+  bugzilla = RedHatBugzilla.new(session[:user], session[:password])
+  bugs = bugzilla.bugs_for_release(params[:id], params)
+
+  content_type :json
+  bugs
+end
+
+get '/issue/:id' do
+  issue = Issue.new(params[:id])
+
+  content_type :json
+  issue.raw_data.to_json
+end
+
+get '/bugzilla/:id/clones' do
+  bugzilla = RedHatBugzilla.new(session[:user], session[:password])
+  bug = bugzilla.find_clone(params[:id], params[:blocker_ids])
+
+  content_type :json
+  bug
+end
+
+get '/bugzilla/:id' do
+  bugzilla = RedHatBugzilla.new(session[:user], session[:password])
+  bug = bugzilla.get_bug(params[:id])
+
+  content_type :json
+  bug
+end
+
+get '/*' do
+  send_file 'app/index.html'
 end
 
 def verify_signature(payload_body)
