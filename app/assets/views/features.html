@@ -1,0 +1,63 @@
+<div ng-repeat="feature in features.feature.features" class="dashboard-widget">
+
+  <h3>{{ feature.subject }}</h3>
+
+  <div ng-repeat="(release, counts) in feature.releases">
+    <span>{{ release }}</span>
+    <span progressbar value="features.completion(feature, release)" type="{{ features.getType(feature, release) }}" class="progress-striped">
+      <i>{{ counts.closed }} / {{ counts.open + counts.closed }}</i>
+    </span>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th></th>
+        <th ng-repeat="(release, counts) in feature.releases">{{ release | number:1 }}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td colspan="{{ 1 + features.releasesCount(feature) }}" class="divider">Issues ({{ feature.related_issues }})</td>
+      </tr>
+      <tr>
+        <td>Open</td>
+        <td ng-repeat="(release, counts) in feature.releases" class="align-right">{{ counts.open }}</td>
+      </tr>
+      <tr>
+        <td>Closed</td>
+        <td ng-repeat="(release, counts) in feature.releases" class="align-right">{{ counts.closed }}</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td ng-repeat="(release, counts) in feature.releases" class="align-right">{{ counts.open + counts.closed }}</td>
+      </tr>
+      <!--
+      <tr>
+        <td colspan="{{ 1 + feature.releases.length }}" class="divider">Related Issues</td>
+      </tr>
+      <tr>
+        <td>Related</td>
+        <td class="align-right">{{ feature.related_issues - feature.relations.length }}</td>
+      </tr>
+      -->
+      <tr>
+        <td colspan="{{ 1 + features.releasesCount(feature) }}" class="divider">Story Points</td>
+      </tr>
+      <tr>
+        <td>Ungroomed Stories</td>
+        <td ng-repeat="(release, counts) in feature.releases" class="align-right">{{ counts.ungroomed }}</td>
+      </tr>
+      <tr>
+        <td>Story Points Left</td>
+        <td ng-repeat="(release, counts) in feature.releases" class="align-right">{{ counts.storyPoints }}</td>
+      </tr>
+      <tr>
+        <td>Story Points Completed</td>
+        <td ng-repeat="(release, counts) in feature.releases" class="align-right">{{ counts.storyPointsCompleted }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

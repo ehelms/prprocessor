@@ -34,6 +34,7 @@ class Project < RedmineResource
     issues = get_issues(:limit => 100, :tracker_id => 6, :include => 'relations')
 
     issues['issues'].each do |issue|
+      issue['related_issues'] = issue['relations'].length
       related_issues = issues_for_tracker(issue)['issues']
       issue['relations'] = related_issues
     end
@@ -42,7 +43,9 @@ class Project < RedmineResource
   end
 
   def issues_for_tracker(issue)
-    get_issues(:limit => 100, :relates => issue['id'])
+    issues = get_issues(:limit => 100, :blocks => issue['id'], :status_id => "*", :release_id => "*")
+    issues['issues'].concat(get_issues(:limit => 100, :relates => issue['id'], :status_id => "*", :release_id => "*")['issues'])
+    issues
   end
 
   def current_version

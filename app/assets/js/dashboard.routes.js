@@ -59,6 +59,11 @@
                 url: '/dashboard/sprints/:sprintId',
                 templateUrl: '/assets/views/sprint.html',
                 controller: 'SprintController as sprint'
+            })
+            .state('features', {
+                url: '/dashboard/features/:project',
+                templateUrl: '/assets/views/features.html',
+                controller: 'FeaturesController as features'
             });
     };
 
