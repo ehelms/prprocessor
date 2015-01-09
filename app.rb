@@ -59,12 +59,12 @@ get '/status' do
   erb :status, :locals => locals
 end
 
-get '/user' do
+get '/api/user' do
   content_type :json
   {:user => session[:user]}.to_json
 end
 
-post '/login' do
+post '/api/login' do
   data = JSON.parse(request.body.read)
 
   session[:user] = data['user']
@@ -73,13 +73,29 @@ post '/login' do
   'success'
 end
 
-post '/logout' do
+post '/api/logout' do
   session.clear
 
   'success'
 end
 
-get '/upstream/release/:project/:id' do
+get '/api/upstream/:project/versions' do
+  project = Project.new(params[:project])
+  versions = project.versions
+
+  content_type :json
+  versions.to_json
+end
+
+get '/api/upstream/:project/versions/:versionId/issues' do
+  project = Project.new(params[:project])
+  issues = project.issues_for_version(params[:versionId])
+
+  content_type :json
+  issues.to_json
+end
+
+get '/api/upstream/release/:project/:id' do
   project = Project.new(params[:project])
   issues = project.get_issues_for_release(params[:id])
 
@@ -87,7 +103,15 @@ get '/upstream/release/:project/:id' do
   issues.to_json
 end
 
-get '/downstream/release/:id' do
+get '/api/upstream/:project/trackers' do
+  project = Project.new(params[:project])
+  issues = project.trackers
+
+  content_type :json
+  issues.to_json
+end
+
+get '/api/downstream/release/:id' do
   bugzilla = RedHatBugzilla.new(session[:user], session[:password])
   bugs = bugzilla.bugs_for_release(params[:id], params)
 
@@ -95,14 +119,14 @@ get '/downstream/release/:id' do
   bugs
 end
 
-get '/issue/:id' do
+get '/api/issue/:id' do
   issue = Issue.new(params[:id])
 
   content_type :json
   issue.raw_data.to_json
 end
 
-get '/bugzilla/:id/clones' do
+get '/api/bugzilla/:id/clones' do
   bugzilla = RedHatBugzilla.new(session[:user], session[:password])
   bug = bugzilla.find_clone(params[:id], params[:blocker_ids])
 
@@ -110,7 +134,7 @@ get '/bugzilla/:id/clones' do
   bug
 end
 
-get '/bugzilla/:id' do
+get '/api/bugzilla/:id' do
   bugzilla = RedHatBugzilla.new(session[:user], session[:password])
   bug = bugzilla.get_bug(params[:id])
 

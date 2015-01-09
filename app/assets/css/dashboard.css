@@ -41,9 +41,9 @@ a {
 
 .table > tbody > tr > td {
   vertical-align: middle;
-  text-align: center;
+  text-align: left;
 }
 
-.table .align-left {
-  text-align: left;
+.table .align-center {
+  text-align: center;
 }

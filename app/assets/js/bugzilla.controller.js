@@ -20,17 +20,17 @@
         self.id = $stateParams.bugzillaId;
         self.priorState = "/dashboard/downstream";
 
-        $http.get('/bugzilla/' + this.id).success(function (bugzilla) {
+        $http.get('/api/bugzilla/' + this.id).success(function (bugzilla) {
             self.bugzilla = bugzilla.result.bugs[0];
 
             if (self.bugzilla.url !== "") {
-                $http.get('/issue/' + self.bugzilla.url.split('http://projects.theforeman.org/issues/')[1]).success(function (issue) {
+                $http.get('/api/issue/' + self.bugzilla.url.split('http://projects.theforeman.org/issues/')[1]).success(function (issue) {
                     self.issue = issue.issue;
                 });
             }
 
             if (self.bugzilla.blocks) {
-                $http.get('/bugzilla/' + self.bugzilla.id + '/clones', {params: {'blocker_ids[]': self.bugzilla.blocks}}).success(function (clone) {
+                $http.get('/api/bugzilla/' + self.bugzilla.id + '/clones', {params: {'blocker_ids[]': self.bugzilla.blocks}}).success(function (clone) {
                     self.clone = clone.result.bugs[0];
                 });
             }

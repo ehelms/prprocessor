@@ -35,7 +35,6 @@
         self.bugzillaId = function (issue) {
             var id = '';
 
-            console.log(issue);
             angular.forEach(issue['custom_fields'], function (field, key) {
                 if (field.name === 'Bugzilla link') {
                     id = field.value;

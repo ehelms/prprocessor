@@ -18,7 +18,7 @@
         var self = this;
 
         self.postLogin = function (user, password) {
-            $http.post('/login', {user: user, password: password}).success(function () {
+            $http.post('/api/login', {user: user, password: password}).success(function () {
                 User.fetch();
                 $state.go('downstream');
             });

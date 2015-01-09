@@ -1,0 +1,53 @@
+<div class="table-container">
+  
+  <ol class="breadcrumb">
+    <li>
+      <a ng-href="{{ issue.priorState }}">Dashboard</a>
+    </li>
+    <li>
+      <a ng-href="/dashboard/sprints">Sprints</a>
+    </li>
+    <li class=active">
+      Sprint {{ sprint.sprint.id }}
+    </li>
+  </ol>
+
+  <table class="table table-bordered table-stripped">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Open</th>
+        <th>Closed</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>Features</td>
+        <td>{{ sprint.stats.open.features }}</td>
+        <td>{{ sprint.stats.closed.features }}</td>
+        <td>{{ sprint.stats.open.features + sprint.stats.closed.features }}</td>
+      </tr>
+      <tr>
+        <td>Bugs</td>
+        <td>{{ sprint.stats.open.bugs }}</td>
+        <td>{{ sprint.stats.closed.bugs }}</td>
+        <td>{{ sprint.stats.open.bugs + sprint.stats.closed.bugs }}</td>
+      </tr>
+      <tr>
+        <td>Refactor</td>
+        <td>{{ sprint.stats.open.refactor }}</td>
+        <td>{{ sprint.stats.closed.refactor }}</td>
+        <td>{{ sprint.stats.closed.refactor + sprint.stats.open.refactor }}</td>
+      </tr>
+      <tr>
+        <td>Story Points</td>
+        <td>{{ sprint.stats.open.points }} ({{ sprint.stats.open.points / (sprint.stats.closed.points + sprint.stats.open.points) * 100 | number:0 }} %)</td>
+        <td>{{ sprint.stats.closed.points }} ({{ sprint.stats.closed.points / (sprint.stats.closed.points + sprint.stats.open.points) * 100 | number:0 }} %)</td>
+        <td>{{ sprint.stats.open.points + sprint.stats.closed.points || 0 }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

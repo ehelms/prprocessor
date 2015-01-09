@@ -1,0 +1,30 @@
+<div class="table-container">
+  
+  <ol class="breadcrumb">
+    <li>
+      <a ng-href="{{ issue.priorState }}">Dashboard</a>
+    </li>
+    <li class=active">
+      Sprints
+    </li>
+  </ol>
+
+  <table class="table table-bordered table-stripped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="sprint in sprints.sprint.sprints | orderBy:'due_date':true ">
+        <td><a ui-sref="sprint({sprintId: sprint.id})">{{ sprint.name }}</a></td>
+        <td>{{ sprint.due_date }}</td>
+        <td>{{ sprint.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

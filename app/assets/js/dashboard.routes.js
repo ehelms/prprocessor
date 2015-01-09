@@ -49,6 +49,16 @@
                 url: '/dashboard/bugzilla/:bugzillaId',
                 templateUrl: '/assets/views/issue.html',
                 controller: 'BugzillaController as issue'
+            })
+            .state('sprints', {
+                url: '/dashboard/sprints',
+                templateUrl: '/assets/views/sprints.html',
+                controller: 'SprintsController as sprints'
+            })
+            .state('sprint', {
+                url: '/dashboard/sprints/:sprintId',
+                templateUrl: '/assets/views/sprint.html',
+                controller: 'SprintController as sprint'
             });
     };
 

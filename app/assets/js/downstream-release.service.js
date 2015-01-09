@@ -18,13 +18,13 @@
         var self = this;
 
         self.openIssues = function (release, params) {
-            var url = '/downstream/release/' + release;
+            var url = '/api/downstream/release/' + release;
 
             return $http.get(url, {params: params});
         };
 
         self.closedIssues = function (release, params) {
-            var url = '/downstream/release/' + release;
+            var url = '/api/downstream/release/' + release;
 
             params['status'] = 'closed';
 

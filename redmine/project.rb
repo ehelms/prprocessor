@@ -8,16 +8,41 @@ class Project < RedmineResource
     '/projects'
   end
 
-  def get_versions
+  def versions
     get("#{@raw_data['project']['id']}/versions")
   end
 
+  def issues_for_version(id)
+    get_issues(:fixed_version_id => id, :limit => 100, :status_id => "*")
+  end
+
   def get_issues(params = {})
-    get("#{@raw_data['project']['id']}/issues", params)
+    issues = get("#{@raw_data['project']['id']}/issues", params)
+
+    if issues['offset'] + issues['limit'] < issues['total_count']
+      issues = issues['issues'].concat(get_issues(params.merge(:offset => issues['offset'] + issues['limit']))['issues'])
+    end
+
+    issues
   end
 
   def get_issues_for_release(id)
-    get_issues(:release_id => id, :limit => 400, :status_id => "*")
+    get_issues(:release_id => id, :limit => 100, :status_id => "*")
+  end
+
+  def trackers
+    issues = get_issues(:limit => 100, :tracker_id => 6, :include => 'relations')
+
+    issues['issues'].each do |issue|
+      related_issues = issues_for_tracker(issue)['issues']
+      issue['relations'] = related_issues
+    end
+
+    issues
+  end
+
+  def issues_for_tracker(issue)
+    get_issues(:limit => 100, :relates => issue['id'])
   end
 
   def current_version

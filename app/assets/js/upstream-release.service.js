@@ -21,7 +21,7 @@
 
         self.issues = deferred.promise;
 
-        $q.all([$http.get('/upstream/release/katello/14'), $http.get('/upstream/release/foreman/21')]).then(function (responses) {
+        $q.all([$http.get('/api/upstream/release/katello/14'), $http.get('/api/upstream/release/foreman/21')]).then(function (responses) {
             var issues = [];
 
             angular.forEach(responses, function (response) {

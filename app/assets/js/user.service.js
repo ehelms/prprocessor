@@ -20,13 +20,13 @@
         self.username = null;
 
         this.fetch = function () {
-            $http.get('/user').success(function (response) {
+            $http.get('/api/user').success(function (response) {
                 self.username = response.user;
             });
         };
 
         this.logout = function () {
-            var logout = $http.post('/logout');
+            var logout = $http.post('/api/logout');
 
             logout.then(function () {
                 self.fetch();

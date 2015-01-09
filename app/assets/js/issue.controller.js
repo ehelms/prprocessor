@@ -20,14 +20,14 @@
         self.id = $stateParams.issueId;
         self.priorState = "/dashboard/upstream";
 
-        $http.get('/issue/' + this.id).success(function (issue) {
+        $http.get('/api/issue/' + this.id).success(function (issue) {
             self.issue = issue.issue;
 
-            $http.get('/bugzilla/' + self.issue.custom_fields[2].value).success(function (bugzilla) {
+            $http.get('/api/bugzilla/' + self.issue.custom_fields[2].value).success(function (bugzilla) {
                 self.bugzilla = bugzilla.result.bugs[0];
 
                 if (self.bugzilla.blocks) {
-                    $http.get('/bugzilla/' + self.bugzilla.id + '/clones', {blocker_ids: self.bugzilla.blocks}).success(function (clone) {
+                    $http.get('/api/bugzilla/' + self.bugzilla.id + '/clones', {blocker_ids: self.bugzilla.blocks}).success(function (clone) {
                         self.clone = clone.result.bugs[0];
                     });
                 }
