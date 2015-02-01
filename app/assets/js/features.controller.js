@@ -23,6 +23,10 @@
 
         Feature.getFeatures($stateParams.project);
 
+        self.refresh = function () {
+            Feature.refresh($stateParams.project);
+        };
+
         self.getType = function (feature, release) {
             var type = 'danger',
                 completion = self.completion(feature, release);

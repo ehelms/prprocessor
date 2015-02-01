@@ -12,6 +12,29 @@
   <table class="table table-bordered table-stripped">
     <thead>
       <tr>
+        <th>Ungroomed stories</th>
+      </tr>
+    </thead>
+
+
+    <tbody>
+
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-default" style="float:right; margin-bottom: 20px" ng-click="sprints.refresh()">
+        <span ng-show="sprints.refreshing"><i class="fa fa-spinner"></i>Refreshing Sprint Data...</span>
+        <span ng-show="!sprints.refreshing">Refresh Sprint Data</span>
+      </button>
+      <span style="float:right;padding: 5px;">Last refreshed on:   {{ sprints.sprint.sprints[0]['refreshed_on'] | date:'medium' }}</span>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-stripped">
+    <thead>
+      <tr>
         <th>Name</th>
         <th>Due Date</th>
         <th>Status</th>
@@ -20,7 +43,7 @@
 
     <tbody>
       <tr ng-repeat="sprint in sprints.sprint.sprints | orderBy:'due_date':true ">
-        <td><a ui-sref="sprint({sprintId: sprint.id})">{{ sprint.name }}</a></td>
+        <td><a ui-sref="sprint({sprintId: sprint._id})">{{ sprint.name }}</a></td>
         <td>{{ sprint.due_date }}</td>
         <td>{{ sprint.status }}</td>
       </tr>

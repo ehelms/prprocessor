@@ -20,6 +20,10 @@
         self.sprint = Sprint;
 
         Sprint.getSprints();
+
+        self.refresh = function () {
+            return self.sprint.refresh();
+        };
     };
 
 })();

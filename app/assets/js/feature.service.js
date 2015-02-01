@@ -26,11 +26,20 @@
             promise = $http.get('/api/upstream/' + project + '/trackers')
 
             promise.then(function (response) {
-                self.features = response.data.issues;
+                self.features = response.data;
                 processFeatures(self.features);
             });
 
             return promise;
+        };
+
+        self.refresh = function (project) {
+            self.refreshing = true;
+
+            return $http.get('/api/upstream/' + project + '/trackers/update').then(function (response) {
+                self.refreshing = false;
+                self.getFeatures(project);
+            });
         };
 
         function processFeatures(features) {
@@ -41,17 +50,16 @@
             });
         }
 
-
         function addReleases(feature) {
             feature.releases = {};
 
-            angular.forEach(feature.relations, function (issue) {
+            angular.forEach(feature.related_issues, function (issue) {
                 feature.releases[releaseName(issue)] = {open: 0, closed: 0, storyPoints: 0, storyPointsCompleted: 0, ungroomed: 0};
             });
         }
 
         function addCounts(feature) {
-            angular.forEach(feature.relations, function (issue) {
+            angular.forEach(feature.related_issues, function (issue) {
                 if (isClosed(issue)) {
                     feature.releases[releaseName(issue)]['closed'] += 1;
                 } else {
@@ -61,7 +69,7 @@
         }
 
         function addStoryPoints(feature) {
-            angular.forEach(feature.relations, function (issue) {
+            angular.forEach(feature.related_issues, function (issue) {
                 if (issue.story_points) {
                     if (isClosed(issue)) {
                         feature.releases[releaseName(issue)].storyPointsCompleted += issue.story_points;

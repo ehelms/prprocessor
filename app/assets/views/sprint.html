@@ -12,6 +12,16 @@
     </li>
   </ol>
 
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-default" style="float:right; margin-bottom: 20px" ng-click="sprint.refresh()">
+        <span ng-show="sprints.refreshing"><i class="fa fa-spinner"></i>Refreshing Sprint Data...</span>
+        <span ng-show="!sprints.refreshing">Refresh Sprint Data</span>
+      </button>
+      <span style="float:right;padding: 5px;">Last refreshed on:   {{ sprint.sprint.issues[0]['refreshed_on'] | date:'medium' }}</span>
+    </div>
+  </div>
+
   <table class="table table-bordered table-stripped">
     <thead>
       <tr>
@@ -40,6 +50,12 @@
         <td>{{ sprint.stats.open.refactor }}</td>
         <td>{{ sprint.stats.closed.refactor }}</td>
         <td>{{ sprint.stats.closed.refactor + sprint.stats.open.refactor }}</td>
+      </tr>
+      <tr>
+        <td>Ungroomed</td>
+        <td>{{ sprint.stats.open.ungroomed }}</td>
+        <td>{{ sprint.stats.closed.ungroomed }}</td>
+        <td>{{ sprint.stats.open.ungroomed + sprint.stats.closed.ungroomed || 0 }}</td>
       </tr>
       <tr>
         <td>Story Points</td>

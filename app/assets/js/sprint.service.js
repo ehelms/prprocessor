@@ -30,25 +30,48 @@
             self.stats['closed']['features'] = 0;
             self.stats['closed']['refactor'] = 0;
             self.stats['closed']['points'] = 0;
+            self.stats['closed']['ungroomed'] = 0;
             self.stats['open']['bugs'] = 0;
             self.stats['open']['features'] = 0;
             self.stats['open']['refactor'] = 0;
             self.stats['open']['points'] = 0;
+            self.stats['open']['ungroomed'] = 0;
         };
 
         self.getSprints = function () {
-            $http.get('/api/upstream/katello/versions').then(function (response) {
-                self.sprints = response.data.versions;
+            return $http.get('/api/upstream/katello/versions').then(function (response) {
+                self.sprints = response.data;
             });
         };
 
         self.getIssues = function (id) {
             self.resetStats();
 
-            $http.get('/api/upstream/katello/versions/' + id + '/issues').then(function (response) {
+            return $http.get('/api/upstream/katello/versions/' + id + '/issues').then(function (response) {
                 self.issues = response.data;
                 self.processIssues(self.issues);
             });
+        };
+
+        self.refresh = function () {
+            self.refreshing = true;
+
+            return $http.get('/api/upstream/katello/versions/update').then(function (response) {
+                self.getSprints().then(function () {
+                    self.refreshing = false;
+                });
+            });
+        };
+
+        self.refreshIssues = function (id) {
+            self.refreshing = true;
+
+            return $http.get('/api/upstream/katello/versions/' + id + '/issues/update').then(function (response) {
+                self.getIssues(id).then(function () {
+                    self.refreshing = false;
+                });
+            });
+
         };
 
         self.processIssues = function (issues) {
@@ -64,6 +87,10 @@
                             self.stats.closed.bugs += 1;
                         } else if (issue.tracker.name === "Feature") {
                             self.stats.closed.features += 1;
+
+                            if (issue['story_points'] === null) {
+                                self.stats.closed.ungroomed += 1;
+                            }
                         } else if (issue.tracker.name === "Refactor") {
                             self.stats.closed.refactor += 1;
                         }
@@ -73,6 +100,10 @@
                             self.stats.open.bugs += 1;
                         } else if (issue.tracker.name === "Feature") {
                             self.stats.open.features += 1;
+
+                            if (issue['story_points'] === null) {
+                                self.stats.closed.ungroomed += 1;
+                            }
                         } else if (issue.tracker.name === "Refactor") {
                             self.stats.open.refactor += 1;
                         }

@@ -21,6 +21,10 @@
         self.stats = Sprint.stats;
 
         Sprint.getIssues($stateParams.sprintId);
+
+        self.refresh = function () {
+            return Sprint.refreshIssues($stateParams.sprintId);
+        };
     };
 
 })();

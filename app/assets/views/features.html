@@ -1,3 +1,15 @@
+<section class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-default" style="float:right; margin-bottom: 20px" ng-click="features.refresh()">
+        <span ng-show="features.refreshing"><i class="fa fa-spinner"></i>Refreshing Feature Data...</span>
+        <span ng-show="!features.refreshing">Refresh Sprint Data</span>
+      </button>
+      <span style="float:right;padding: 5px;">Last refreshed on:   {{ features.feature.features[0]['refreshed_on'] | date:'medium' }}</span>
+    </div>
+  </div>
+</section>
+
 <div ng-repeat="feature in features.feature.features" class="dashboard-widget">
 
   <h3>{{ feature.subject }}</h3>
@@ -19,7 +31,7 @@
 
     <tbody>
       <tr>
-        <td colspan="{{ 1 + features.releasesCount(feature) }}" class="divider">Issues ({{ feature.related_issues }})</td>
+        <td colspan="{{ 1 + features.releasesCount(feature) }}" class="divider">Issues ({{ feature.related_issues.length }})</td>
       </tr>
       <tr>
         <td>Open</td>
@@ -33,15 +45,6 @@
         <td>Total</td>
         <td ng-repeat="(release, counts) in feature.releases" class="align-right">{{ counts.open + counts.closed }}</td>
       </tr>
-      <!--
-      <tr>
-        <td colspan="{{ 1 + feature.releases.length }}" class="divider">Related Issues</td>
-      </tr>
-      <tr>
-        <td>Related</td>
-        <td class="align-right">{{ feature.related_issues - feature.relations.length }}</td>
-      </tr>
-      -->
       <tr>
         <td colspan="{{ 1 + features.releasesCount(feature) }}" class="divider">Story Points</td>
       </tr>

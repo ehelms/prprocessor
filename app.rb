@@ -1,17 +1,26 @@
 require 'sinatra'
 require 'json'
 require 'openssl'
+require 'mongoid'
 
 require File.join(File.dirname(__FILE__), 'redmine/issue')
 require File.join(File.dirname(__FILE__), 'redmine/project')
 require File.join(File.dirname(__FILE__), 'github/pull_request')
 require File.join(File.dirname(__FILE__), 'jenkins')
 require File.join(File.dirname(__FILE__), 'bugzilla')
+require File.join(File.dirname(__FILE__), 'models/version')
+require File.join(File.dirname(__FILE__), 'models/project')
+require File.join(File.dirname(__FILE__), 'models/issue')
+require File.join(File.dirname(__FILE__), 'server/updates')
+require File.join(File.dirname(__FILE__), 'server/auth')
 
 set :public_folder, Proc.new { File.join(root, "app") }
 
 enable :sessions
 set :session_secret, 'super secret'
+
+Mongoid.load!(File.expand_path(File.join("mongoid.yml")))
+puts Mongoid.sessions
 
 post '/pull_request' do
   request.body.rewind
@@ -28,14 +37,14 @@ post '/pull_request' do
   halt if ['labeled', 'unlabeled'].include?(pr_action)
 
   pull_request.issue_numbers.each do |issue_number|
-    issue = Issue.new(issue_number)
-    project = Project.new(issue.project)
+    issue = Redmine::Issue.new(issue_number)
+    project = Redmine::Project.new(issue.project)
     current_version = project.current_version
 
     unless issue.rejected?
       issue.set_version(current_version['id']) if issue.version.nil? && current_version
       issue.set_pull_request(pull_request.raw_data['html_url']) if issue.pull_request.nil? || issue.pull_request.empty?
-      issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed?
+      issue.set_status(Redmine::Issue::READY_FOR_TESTING) unless issue.closed?
       issue.save!
     end
   end
@@ -59,44 +68,24 @@ get '/status' do
   erb :status, :locals => locals
 end
 
-get '/api/user' do
-  content_type :json
-  {:user => session[:user]}.to_json
-end
-
-post '/api/login' do
-  data = JSON.parse(request.body.read)
-
-  session[:user] = data['user']
-  session[:password] = data['password']
-
-  'success'
-end
-
-post '/api/logout' do
-  session.clear
-
-  'success'
-end
-
 get '/api/upstream/:project/versions' do
-  project = Project.new(params[:project])
-  versions = project.versions
+  project = Redmine::Project.new(params[:project])
+
+  versions = Version.where(:project_id => project.raw_data['project']['id'])
 
   content_type :json
   versions.to_json
 end
 
 get '/api/upstream/:project/versions/:versionId/issues' do
-  project = Project.new(params[:project])
-  issues = project.issues_for_version(params[:versionId])
+  issues = Issue.where(:fixed_version_id => params[:versionId].to_i)
 
   content_type :json
   issues.to_json
 end
 
 get '/api/upstream/release/:project/:id' do
-  project = Project.new(params[:project])
+  project = Redmine::Project.new(params[:project])
   issues = project.get_issues_for_release(params[:id])
 
   content_type :json
@@ -104,8 +93,7 @@ get '/api/upstream/release/:project/:id' do
 end
 
 get '/api/upstream/:project/trackers' do
-  project = Project.new(params[:project])
-  issues = project.trackers
+  issues = Issue.where(:project_id => Project.where(:name => params[:project]).first.id)
 
   content_type :json
   issues.to_json
@@ -120,7 +108,7 @@ get '/api/downstream/release/:id' do
 end
 
 get '/api/issue/:id' do
-  issue = Issue.new(params[:id])
+  issue = Redmine::Issue.new(params[:id])
 
   content_type :json
   issue.raw_data.to_json
@@ -142,7 +130,7 @@ get '/api/bugzilla/:id' do
   bug
 end
 
-get '/*' do
+get %r{^(?!/api*)} do
   send_file 'app/index.html'
 end
 
