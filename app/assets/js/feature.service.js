@@ -91,7 +91,16 @@
         }
 
         function releaseName(issue) {
-            return issue.release.release.name.split('Katello ')[1];
+            var release;
+
+            if (issue.release) {
+                release = issue.release.release.name.split('Katello ')[1];
+            } else {
+                release = 'No Release';
+            }
+
+
+            return release;
         }
     }
 

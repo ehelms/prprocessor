@@ -44,8 +44,8 @@ module Redmine
     end
 
     def issues_for_tracker(issue)
-      issues = get_issues(:limit => 100, :blocks => issue['id'], :status_id => "*", :release_id => "*")
-      issues.concat(get_issues(:limit => 100, :relates => issue['id'], :status_id => "*", :release_id => "*"))
+      issues = get_issues(:limit => 100, :blocks => issue['id'], :status_id => "*")
+      issues.concat(get_issues(:limit => 100, :relates => issue['id'], :status_id => "*"))
       issues
     end
 
