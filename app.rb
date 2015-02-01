@@ -93,7 +93,7 @@ get '/api/upstream/release/:project/:id' do
 end
 
 get '/api/upstream/:project/trackers' do
-  issues = Issue.where(:project_id => Project.where(:name => params[:project]).first.id)
+  issues = Issue.where(:project_id => Project.where(:name => params[:project]).first.id).where('tracker.name' => 'Tracker')
 
   content_type :json
   issues.to_json
