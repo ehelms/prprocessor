@@ -5,6 +5,8 @@ class Issue
   belongs_to :fixed_version, :class_name => 'Version'
   belongs_to :project
 
+  CLOSED_STATUSES = ['Closed', 'Rejected', 'Duplicate', 'Resolved']
+
   def self.index(issues)
     issues.each do |issue_data|
       issue_data['refreshed_on'] = Time.now
@@ -20,6 +22,10 @@ class Issue
         self.create!(issue_data)
       end
     end
+  end
+
+  def self.closed?(issue)
+    CLOSED_STATUSES.include?(issue['status']['name'])
   end
 
 end

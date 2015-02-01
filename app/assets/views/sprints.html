@@ -12,13 +12,24 @@
   <table class="table table-bordered table-stripped">
     <thead>
       <tr>
-        <th>Ungroomed stories</th>
+        <th colspan="2">Historical</th>
       </tr>
     </thead>
 
 
     <tbody>
-
+      <tr>
+        <td>Ungroomed Stories</td>
+        <td>{{ sprints.ungroomed() }}</td>
+      </tr>
+      <tr>
+        <td>Features</td>
+        <td>{{ sprints.features() }}</td>
+      </tr>
+      <tr>
+        <td>Bugs</td>
+        <td>{{ sprints.bugs() }}</td>
+      </tr>
     </tbody>
   </table>
 
@@ -38,6 +49,10 @@
         <th>Name</th>
         <th>Due Date</th>
         <th>Status</th>
+        <th>Ungroomed (Open / Closed)</th>
+        <th>Story Points (Open / Closed)</th>
+        <th>Features (Open / Closed)</th>
+        <th>Bugs (Open / Closed)</th>
       </tr>
     </thead>
 
@@ -46,6 +61,18 @@
         <td><a ui-sref="sprint({sprintId: sprint._id})">{{ sprint.name }}</a></td>
         <td>{{ sprint.due_date }}</td>
         <td>{{ sprint.status }}</td>
+        <td>
+          {{ sprint.stats.open.ungroomed }} / {{ sprint.stats.closed.ungroomed }}
+        </td>
+        <td>
+          {{ sprint.stats.open.story_points }} / {{ sprint.stats.closed.story_points }}
+        </td>
+        <td>
+          {{ sprint.stats.open.features }} / {{ sprint.stats.closed.features }}
+        </td>
+        <td>
+          {{ sprint.stats.open.bugs }} / {{ sprint.stats.closed.bugs }}
+        </td>
       </tr>
     </tbody>
   </table>
