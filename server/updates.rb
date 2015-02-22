@@ -19,6 +19,7 @@ end
 get '/api/upstream/:project/versions/:versionId/issues/update' do
   project = Redmine::Project.new(params[:project])
   issues = project.issues_for_version(params[:versionId])
+  Issue.destroy_all(:fixed_version_id => params[:versionId].to_i)
   Issue.index(issues)
 
   content_type :json
@@ -29,6 +30,7 @@ get '/api/upstream/:project/trackers/update' do
   project = Redmine::Project.new(params[:project])
   issues = project.trackers
 
+  Issue.destroy_all(:project_id => Project.where(:name => params[:project]).first.id, 'tracker.name' => 'Tracker')
   Issue.index(issues)
 
   content_type :json

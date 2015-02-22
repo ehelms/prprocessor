@@ -21,15 +21,17 @@
 
         self.issues = deferred.promise;
 
-        $q.all([$http.get('/api/upstream/release/katello/14'), $http.get('/api/upstream/release/foreman/21')]).then(function (responses) {
-            var issues = [];
+        self.fetchIssues = function (katello, foreman) {
+            return $q.all([$http.get('/api/upstream/release/katello/' + katello), $http.get('/api/upstream/release/foreman/' + foreman)]).then(function (responses) {
+                var issues = [];
 
-            angular.forEach(responses, function (response) {
-                issues = issues.concat(response.data.issues);
+                angular.forEach(responses, function (response) {
+                    issues = issues.concat(response.data);
+                });
+
+                deferred.resolve(issues);
             });
-
-            deferred.resolve(issues);
-        });
+        }
 
         self.openIssue = function (issue) {
             return !self.closedIssue(issue);

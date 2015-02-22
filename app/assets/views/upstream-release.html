@@ -1,7 +1,11 @@
 <div class="fluid-container table-container">
 
   <div class="row">
-    <h2 class="col-md-5">Foreman 1.7 & Katello 2.1</h2>
+    <h2 class="col-sm-12">Upstream Release View</h2>
+    <label class="col-md-5">
+      Select Version Combination
+      <select ng-options="id as version.label for (id, version) in release.versions" ng-model="release.version" ng-change="release.fetchIssues(release.version)"></select>
+    </label>
     <h2 ng-show="release.working"><i class="fa fa-spinner fa-spin"></i>Working...</h2>
   </div>
 
