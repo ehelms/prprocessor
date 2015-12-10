@@ -5,7 +5,8 @@ gem 'rest_client'
 gem "octokit", "~> 3.0"
 gem "ruby-bugzilla"
 gem "mongoid", "~> 4.0.0"
+gem "json"
 
 group :development do
-  gem 'debugger'
+  gem "rerun"
 end

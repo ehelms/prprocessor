@@ -16,6 +16,7 @@ require File.join(File.dirname(__FILE__), 'server/updates')
 require File.join(File.dirname(__FILE__), 'server/auth')
 
 set :public_folder, Proc.new { File.join(root, "app") }
+set :bind, '0.0.0.0'
 
 enable :sessions
 set :session_secret, 'super secret'
@@ -59,7 +60,7 @@ post '/pull_request' do
 
 end
 
-get '/reviews/:repo' do
+get '/api/reviews/:repo' do
   reviews = Reviews.data(params[:repo])
 
   content_type :json

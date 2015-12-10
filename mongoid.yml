@@ -1,7 +1,7 @@
 development:
   sessions:
     default:
-      database: mongoid
+      database: db
       hosts:
         - localhost:27017
 

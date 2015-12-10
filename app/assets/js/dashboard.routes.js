@@ -64,6 +64,11 @@
                 url: '/dashboard/features/:project',
                 templateUrl: '/assets/views/features.html',
                 controller: 'FeaturesController as features'
+            })
+            .state('reviews', {
+                url: '/dashboard/reviews',
+                templateUrl: '/assets/views/reviews.html',
+                controller: 'ReviewsController as reviews'
             });
     };
 

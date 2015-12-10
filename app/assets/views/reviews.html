@@ -1,0 +1,34 @@
+<div class="fluid-container table-container">
+
+  <div class="row">
+    <h2 class="col-sm-12">Reviews</h2>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Pull Request</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Status</th>
+        <th>Age</th>
+        <th>Review</th>
+        <th>Reviewer</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="review in reviews.reviews | orderBy: 'age'">
+        <td><a ng-href="https://github.com/theforeman/{{ reviews.repo }}/{{ review.number }}">{{ review.number }}</a></td>
+        <td>{{ reviews.repo }}</td>
+        <td>{{ review.title }}</td>
+        <td>{{ review.author }}</td>
+        <td>{{ review.status }}</td>
+        <td>{{ review.age }}</td>
+        <td>{{ review.review }}</td>
+        <td>{{ review.reviewer }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
