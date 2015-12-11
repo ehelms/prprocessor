@@ -35,11 +35,6 @@
                 templateUrl: '/assets/views/downstream-release.html',
                 controller: 'DownstreamReleaseController as release'
             })
-            .state('upstream', {
-                url: '/dashboard/upstream',
-                templateUrl: '/assets/views/upstream-release.html',
-                controller: 'UpstreamReleaseController as release'
-            })
             .state('issue', {
                 url: '/dashboard/issues/:issueId',
                 templateUrl: '/assets/views/issue.html',
@@ -49,16 +44,6 @@
                 url: '/dashboard/bugzilla/:bugzillaId',
                 templateUrl: '/assets/views/issue.html',
                 controller: 'BugzillaController as issue'
-            })
-            .state('sprints', {
-                url: '/dashboard/sprints',
-                templateUrl: '/assets/views/sprints.html',
-                controller: 'SprintsController as sprints'
-            })
-            .state('sprint', {
-                url: '/dashboard/sprints/:sprintId',
-                templateUrl: '/assets/views/sprint.html',
-                controller: 'SprintController as sprint'
             })
             .state('features', {
                 url: '/dashboard/features/:project',
