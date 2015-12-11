@@ -21,7 +21,7 @@ set :bind, '0.0.0.0'
 enable :sessions
 set :session_secret, 'super secret'
 
-Mongoid.load!(File.expand_path(File.join("mongoid.yml")))
+Mongoid.load!(File.expand_path(File.join("config/mongoid.yml")))
 puts Mongoid.sessions
 
 post '/pull_request' do
