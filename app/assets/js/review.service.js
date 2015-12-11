@@ -22,6 +22,16 @@
 
             return $http.get(url, {params: params});
         };
+
+        self.refresh = function (repo) {
+            self.refreshing = true;
+
+            return $http.get('/api/reviews/' + repo + '/update').then(function (response) {
+                self.reviews(repo).then(function () {
+                    self.refreshing = false;
+                });
+            });
+        };
     };
 
 })();

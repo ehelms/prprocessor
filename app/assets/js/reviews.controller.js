@@ -20,8 +20,12 @@
         self.repo = 'smart-proxy';
 
         Review.reviews(self.repo).then(function (reviews) {
-            self.reviews = reviews.data[self.repo];
+            self.reviews = reviews.data;
         });
+
+        self.refresh = function () {
+            return Review.refresh(self.repo);
+        };
     };
 
 })();
