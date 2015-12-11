@@ -11,7 +11,7 @@ require File.join(File.dirname(__FILE__), 'bugzilla')
 require File.join(File.dirname(__FILE__), 'models/version')
 require File.join(File.dirname(__FILE__), 'models/project')
 require File.join(File.dirname(__FILE__), 'models/issue')
-require File.join(File.dirname(__FILE__), 'models/reviews')
+require File.join(File.dirname(__FILE__), 'models/review')
 require File.join(File.dirname(__FILE__), 'server/updates')
 require File.join(File.dirname(__FILE__), 'server/auth')
 
@@ -60,13 +60,6 @@ post '/pull_request' do
 
 end
 
-get '/api/reviews/:repo' do
-  reviews = Reviews.data(params[:repo])
-
-  content_type :json
-  reviews.to_json
-end
-
 get '/status' do
   locals = {}
   locals[:jenkins_token] = ENV['JENKINS_TOKEN'] ? true : false
@@ -75,6 +68,13 @@ get '/status' do
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
 
   erb :status, :locals => locals
+end
+
+get '/api/reviews/:repo' do
+  reviews = Review.where(:repo => params[:repo])
+
+  content_type :json
+  reviews.to_json
 end
 
 get '/api/upstream/:project/versions' do
