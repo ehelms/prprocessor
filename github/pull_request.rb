@@ -31,8 +31,9 @@ class PullRequest
 
   # Move to a Repository class?
   def self.get_reviews(repo=nil)
+
     client   = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'] )
-    repos    = [repo] || ['smart-proxy']
+    repos    = Review.repos if repos.nil?
     @reviews = {}
     @now     = Time.now
 

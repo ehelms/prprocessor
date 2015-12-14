@@ -17,14 +17,12 @@
     function ReviewsController(Review, $stateParams) {
         var self = this;
 
-        self.repo = 'smart-proxy';
-
-        Review.reviews(self.repo).then(function (reviews) {
+        Review.reviews().then(function (reviews) {
             self.reviews = reviews.data;
         });
 
         self.refresh = function () {
-            return Review.refresh(self.repo);
+            return Review.refresh;
         };
     };
 
