@@ -26,7 +26,7 @@
         self.refresh = function (repo) {
             self.refreshing = true;
 
-            return $http.get('/api/reviews/' + repo + '/update').then(function (response) {
+            return $http.get('/api/reviews/update/' + repo).then(function (response) {
                 self.reviews(repo).then(function () {
                     self.refreshing = false;
                 });

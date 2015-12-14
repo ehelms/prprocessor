@@ -3,7 +3,19 @@ class Review
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
 
-  def self.index(repos)
+  def self.repos
+    [
+      'foreman',
+      'smart-proxy',
+      'theforeman.org',
+      'katello',
+      'foreman_discovery',
+    ]
+  end
+
+  def self.index(repos=nil)
+    repos = Review.repos if repos.nil?
+
     repos.each do |repo,repo_data|
       repo_data.each do |pull_data|
         pull_data['refreshed_on'] = Time.now
