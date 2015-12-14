@@ -1,0 +1,46 @@
+<div class="fluid-container table-container">
+
+  <div class="row">
+    <h2 class="col-sm-12">Reviews</h2>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-default" style="float:right; margin-bottom: 20px" ng-click="reviews.refresh()">
+        <span ng-show="reviews.refreshing"><i class="fa fa-spinner"></i>Refreshing Review Data...</span>
+        <span ng-show="!reviews.refreshing">Refresh Review Data</span>
+      </button>
+      <span style="float:right;padding: 5px;">Last refreshed on: </span>
+    </div>
+  </div>
+
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Pull Request</th>
+        <th>Repository</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Status</th>
+        <th>Age</th>
+        <th>Review</th>
+        <th>Reviewer</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="review in reviews.reviews | orderBy: 'age'">
+        <td><a ng-href="https://github.com/theforeman/{{ review.repo }}/pull/{{ review._id }}">{{ review._id }}</a></td>
+        <td>{{ reviews.repo }}</td>
+        <td>{{ review.title }}</td>
+        <td>{{ review.author }}</td>
+        <td>{{ review.status }}</td>
+        <td>{{ review.age }}</td>
+        <td>{{ review.review }}</td>
+        <td>{{ review.reviewer }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

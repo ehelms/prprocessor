@@ -3,3 +3,7 @@
 # build hook has been run but before the application has been started back
 # up again.  This script gets executed directly, so it could be python, php,
 # ruby, etc.
+
+pushd ${OPENSHIFT_REPO_DIR} > /dev/null
+cp config/mongoid.yml.example config/mongoid.yml
+popd > /dev/null

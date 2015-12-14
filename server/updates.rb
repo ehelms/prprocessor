@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'json'
 
-
 get '/api/upstream/:project/versions/update' do
   project = Redmine::Project.new(params[:project])
   versions = project.versions['versions']
@@ -37,3 +36,11 @@ get '/api/upstream/:project/trackers/update' do
   issues.to_json
 end
 
+get '/api/reviews/update/?:repo?' do
+  pulls = PullRequest.get_reviews(params[:repo])
+
+  Review.index(pulls)
+
+  content_type :json
+  {message: 'success'}.to_json
+end

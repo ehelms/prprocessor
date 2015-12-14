@@ -11,15 +11,17 @@ require File.join(File.dirname(__FILE__), 'bugzilla')
 require File.join(File.dirname(__FILE__), 'models/version')
 require File.join(File.dirname(__FILE__), 'models/project')
 require File.join(File.dirname(__FILE__), 'models/issue')
+require File.join(File.dirname(__FILE__), 'models/review')
 require File.join(File.dirname(__FILE__), 'server/updates')
 require File.join(File.dirname(__FILE__), 'server/auth')
 
 set :public_folder, Proc.new { File.join(root, "app") }
+set :bind, '0.0.0.0'
 
 enable :sessions
 set :session_secret, 'super secret'
 
-Mongoid.load!(File.expand_path(File.join("mongoid.yml")))
+Mongoid.load!(File.expand_path(File.join("config/mongoid.yml")))
 puts Mongoid.sessions
 
 post '/pull_request' do
@@ -66,6 +68,17 @@ get '/status' do
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
 
   erb :status, :locals => locals
+end
+
+get '/api/reviews/?:repo?' do
+  reviews = if params[:repo]
+              Review.where(:repo => params[:repo])
+            else
+              Review.all
+            end
+
+  content_type :json
+  reviews.to_json
 end
 
 get '/api/upstream/:project/versions' do

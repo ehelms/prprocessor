@@ -4,3 +4,4 @@
 *.swo
 tmp/
 data/
+config/mongoid.yml

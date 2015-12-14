@@ -59,7 +59,7 @@ a {
   margin: 20px;
   float: left;
   border-radius: 4px;
-  height: 500px;
+  height: 100%;
 }
 
 .dashboard-widget h3 {
