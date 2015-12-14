@@ -73,3 +73,7 @@ a {
 .fa {
   padding: 0 4px;
 }
+
+.disabled-row > td {
+  opacity: .3;
+}

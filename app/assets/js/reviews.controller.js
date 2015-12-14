@@ -22,7 +22,7 @@
         });
 
         self.refresh = function () {
-            return Review.refresh;
+            return Review.refresh();
         };
     };
 

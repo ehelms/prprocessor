@@ -4,6 +4,10 @@
     <h2 class="col-sm-12">Reviews</h2>
   </div>
 
+  <section class="well">
+    <label><input type="checkbox" ng-model="reviews.showAll"/>Show PRs that Don't Need Review</label>
+  </section>
+
   <div class="row">
     <div class="col-sm-12">
       <button class="btn btn-default" style="float:right; margin-bottom: 20px" ng-click="reviews.refresh()">
@@ -14,26 +18,23 @@
     </div>
   </div>
 
-
   <table class="table table-bordered table-striped">
     <thead>
       <tr>
-        <th>Pull Request</th>
         <th>Repository</th>
         <th>Title</th>
         <th>Author</th>
         <th>Status</th>
-        <th>Age</th>
-        <th>Review</th>
+        <th>Age (in days)</th>
+        <th>Needs Review</th>
         <th>Reviewer</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr ng-repeat="review in reviews.reviews | orderBy: 'age'">
-        <td><a ng-href="https://github.com/theforeman/{{ review.repo }}/pull/{{ review._id }}">{{ review._id }}</a></td>
-        <td>{{ reviews.repo }}</td>
-        <td>{{ review.title }}</td>
+      <tr ng-repeat="review in reviews.reviews | orderBy: '-age'" ng-class="{ 'disabled-row': !review.review }" ng-if="review.review || reviews.showAll">
+        <td>{{ review.repo }}</td>
+        <td><a ng-href="https://github.com/theforeman/{{ review.repo }}/pull/{{ review._id }}">{{ review.title }}</a></td>
         <td>{{ review.author }}</td>
         <td>{{ review.status }}</td>
         <td>{{ review.age }}</td>

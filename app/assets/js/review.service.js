@@ -18,7 +18,7 @@
         var self = this;
 
         self.reviews = function (repo, params) {
-            var url = '/api/reviews/';
+            var url = '/api/reviews';
 
             return $http.get(url, {params: params});
         };
@@ -26,7 +26,7 @@
         self.refresh = function (repo) {
             self.refreshing = true;
 
-            return $http.get('/api/reviews/update/').then(function (response) {
+            return $http.get('/api/reviews/update').then(function (response) {
                 self.reviews(repo).then(function () {
                     self.refreshing = false;
                 });
