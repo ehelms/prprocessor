@@ -70,8 +70,12 @@ get '/status' do
   erb :status, :locals => locals
 end
 
-get '/api/reviews/:repo' do
-  reviews = Review.where(:repo => params[:repo])
+get '/api/reviews/?:repo?' do
+  reviews = if params[:repo]
+              Review.where(:repo => params[:repo])
+            else
+              Review.all
+            end
 
   content_type :json
   reviews.to_json

@@ -8,14 +8,11 @@ class Review
       'foreman',
       'smart-proxy',
       'theforeman.org',
-      'katello',
       'foreman_discovery',
     ]
   end
 
-  def self.index(repos=nil)
-    repos = Review.repos if repos.nil?
-
+  def self.index(repos)
     repos.each do |repo,repo_data|
       repo_data.each do |pull_data|
         pull_data['refreshed_on'] = Time.now
