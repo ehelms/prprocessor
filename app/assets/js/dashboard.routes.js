@@ -23,7 +23,8 @@
         $stateProvider
             .state('dashboard', {
                 url: '/dashboard',
-                templateUrl: '/assets/views/dashboard.html'
+                templateUrl: '/assets/views/dashboard.html',
+                controller: 'DashboardController as dashboard'
             })
             .state('login', {
                 url: '/login',

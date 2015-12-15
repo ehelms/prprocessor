@@ -21,7 +21,7 @@
 
         self.logout = function () {
             User.logout().then(function () {
-                $state.go('dashboard');
+                $state.go('login');
             });
         };
 

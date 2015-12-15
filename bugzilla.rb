@@ -52,6 +52,26 @@ class RedHatBugzilla
     request("Bug.search", params)
   end
 
+  def bugs_for_user(username, options = {})
+    status = (options[:status] == 'closed') ? ["CLOSED"] : ["NEW", "ASSIGNED", "POST", "MODIFIED"]
+
+    fields = default_fields - ['comments']
+
+    params = {
+      :o1 => "substring",
+      :v1 => username,
+      :f1 => "assigned_to",
+      :query_format => "advanced",
+      :status => status,
+      :include_fields => fields
+    }
+
+    params[:limit] = options[:limit] if !options[:limit].nil?
+    params[:offset] = options[:offset] if !options[:offset].nil?
+
+    request("Bug.search", params)
+  end
+
   def find_clone(id, blocker_ids)
     bugs = []
 
@@ -81,7 +101,7 @@ class RedHatBugzilla
   end
 
   def default_fields
-    %w(id status severity component summary flags comments assigned_to keywords url blocks product)
+    %w(id status severity component summary flags comments assigned_to keywords url blocks product cf_pm_score)
   end
 
 end

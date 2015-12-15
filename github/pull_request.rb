@@ -29,6 +29,25 @@ class PullRequest
     @client.add_labels_to_an_issue(@repo, @number, labels)
   end
 
+  def self.get_for_user(username)
+    client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'] )
+
+    pulls = client.search_issues("author:#{username} is:open")[:items].collect do |pull|
+      repo_splitter = pull.html_url.include?('/pull') ? '/pull' : '/issue'
+      repo = pull.html_url.split('https://github.com/')[1].split(repo_splitter)[0]
+
+      {
+        'id'       => pull.number,
+        'title'    => pull.title,
+        'author'   => pull.user.login,
+        'url'      => pull.html_url,
+        'repo'     => repo
+      }
+    end
+
+    pulls
+  end
+
   # Move to a Repository class?
   def self.get_reviews(repo=nil)
 

@@ -127,6 +127,25 @@ get '/api/issue/:id' do
   issue.raw_data.to_json
 end
 
+get '/api/pull_requests' do
+  pulls = if session[:github_username].present?
+            PullRequest.get_for_user(session[:github_username])
+          else
+            {}
+          end
+
+  content_type :json
+  pulls.to_json
+end
+
+get '/api/bugzilla' do
+  bugzilla = RedHatBugzilla.new(session[:user], session[:password])
+  bugs = bugzilla.bugs_for_user(session[:user], params)
+
+  content_type :json
+  bugs
+end
+
 get '/api/bugzilla/:id/clones' do
   bugzilla = RedHatBugzilla.new(session[:user], session[:password])
   bug = bugzilla.find_clone(params[:id], params[:blocker_ids])
@@ -142,6 +161,7 @@ get '/api/bugzilla/:id' do
   content_type :json
   bug
 end
+
 
 get %r{^(?!/api*)} do
   send_file 'app/index.html'

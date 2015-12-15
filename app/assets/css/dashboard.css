@@ -77,3 +77,14 @@ a {
 .disabled-row > td {
   opacity: .3;
 }
+
+.login-input {
+  border: none;
+  font-size: 20px;
+  border-bottom: 2px solid #CCC;
+  margin-bottom: 20px;
+  outline: none;
+  padding: 3px;
+  width: 100%;
+  text-align: center;
+}

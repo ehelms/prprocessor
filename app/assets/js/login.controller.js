@@ -17,10 +17,10 @@
     function LoginController($http, $state, User) {
         var self = this;
 
-        self.postLogin = function (user, password) {
-            $http.post('/api/login', {user: user, password: password}).success(function () {
+        self.postLogin = function (login) {
+            $http.post('/api/login', login).success(function () {
                 User.fetch();
-                $state.go('downstream');
+                $state.go('dashboard');
             });
         }
 

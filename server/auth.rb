@@ -12,6 +12,7 @@ post '/api/login' do
 
   session[:user] = data['user']
   session[:password] = data['password']
+  session[:github_username] = data['github']
 
   'success'
 end
