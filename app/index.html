@@ -36,7 +36,7 @@
           
           <ul class="nav navbar-right navbar-nav">
             <li>
-              <span class="username" ng-show="user.user.username !== null">{{ user.user.username }}</span>
+              <span class="username" ng-show="user.user.username !== null">{{ user.user.username }} ({{ user.user.github }})</span>
             </li>
             <li>
               <a ng-show="user.user.username === null" href="/login" style="float:right;">Bugzilla Login</a>
