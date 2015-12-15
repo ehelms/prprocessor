@@ -21,10 +21,10 @@
           <tr ng-repeat="bug in dashboard.bugs | orderBy:'-cf_pm_score'">
             <td>{{ bug.cf_pm_score }}</td>
             <td>
-              <a ng-href="https://bugzilla.redhat.com/show_bug.cgi?id={{ bug.id }}">{{ bug.id }}</a>
+              <a target="_blank" ng-href="https://bugzilla.redhat.com/show_bug.cgi?id={{ bug.id }}">{{ bug.id }}</a>
             </td>
             <td>
-              <a ng-if="bug.url" ng-href="{{ bug.url }}">
+              <a target="_blank" ng-if="bug.url" ng-href="{{ bug.url }}">
                 {{ bug.url.split('http://projects.theforeman.org/issues/')[1] }}
               </a>
             </td>
@@ -50,7 +50,7 @@
 
         <tbody>
           <tr ng-repeat="pullRequest in dashboard.pullRequests | orderBy:'repo'">
-            <td><a ng-href="{{ pullRequest.url }}">{{ pullRequest.id }}</a></td>
+            <td><a target="_blank" ng-href="{{ pullRequest.url }}">{{ pullRequest.id }}</a></td>
             <td>{{ pullRequest.title }}</td>
             <td>{{ pullRequest.repo }}</td>
           </tr>
