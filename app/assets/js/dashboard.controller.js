@@ -17,7 +17,7 @@
     function DashboardController($http, $state, User) {
         var self = this;
 
-        if (!User.username) {
+        if (!User.isPresent()) {
             $state.transitionTo('login');
         }
 

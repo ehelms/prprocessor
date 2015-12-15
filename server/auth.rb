@@ -4,7 +4,7 @@ require 'json'
 
 get '/api/user' do
   content_type :json
-  {:user => session[:user]}.to_json
+  {:user => session[:user], :github => session[:github_username]}.to_json
 end
 
 post '/api/login' do

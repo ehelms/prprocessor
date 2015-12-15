@@ -19,8 +19,9 @@
 
         self.postLogin = function (login) {
             $http.post('/api/login', login).success(function () {
-                User.fetch();
-                $state.go('dashboard');
+                User.fetch().then(function () {
+                    $state.transitionTo('dashboard');
+                });
             });
         }
 

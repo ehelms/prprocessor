@@ -18,10 +18,12 @@
         var self = this;
 
         self.username = null;
+        self.github = null;
 
         this.fetch = function () {
-            $http.get('/api/user').success(function (response) {
+            return $http.get('/api/user').success(function (response) {
                 self.username = response.user;
+                self.github = response.github;
             });
         };
 
@@ -33,6 +35,10 @@
             });
 
             return logout;
+        };
+
+        this.isPresent = function () {
+            return self.username || self.github;
         };
 
         self.fetch();
