@@ -83,7 +83,7 @@ class PullRequest
         else
           # last comment is from the author, so age is now the time since that comment
           age    = ((@now - (comments.select {|c| c.user.login == pull.user.login}.last.created_at))/60.0/60.0/24.0).round(2)
-          status = :default
+          status = :last_comment_is_author
         end
 
         {
