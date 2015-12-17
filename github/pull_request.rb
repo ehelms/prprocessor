@@ -87,7 +87,8 @@ class PullRequest
         end
 
         {
-          'id'       => pull.number,
+          'id'       => "#{repo}-#{pull.number}",
+          'number'   => pull.number,
           'repo'     => repo,
           'title'    => pull.title,
           'author'   => pull.user.login,
