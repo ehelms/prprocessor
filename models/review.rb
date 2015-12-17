@@ -102,4 +102,18 @@ class Review
 
     end
   end
+
+  def self.get_for_user(github_id)
+    db_reviews = self.where(reviewer:github_id)
+    db_reviews.map { |r|
+      {
+        'id'       => r.number,
+        'title'    => r.title,
+        'author'   => r.author,
+        'url'      => "https://github.com/#{r.repo}/pull/#{r.number}",
+        'repo'     => r.repo.split('/')[1]
+      }
+    }
+  end
+
 end

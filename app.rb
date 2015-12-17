@@ -138,6 +138,17 @@ get '/api/pull_requests' do
   pulls.to_json
 end
 
+get '/api/get_reviews' do
+  reviews = if session[:github_username].present?
+            Review.get_for_user(session[:github_username])
+          else
+            {}
+          end
+
+  content_type :json
+  reviews.to_json
+end
+
 get '/api/bugzilla' do
   bugzilla = RedHatBugzilla.new(session[:user], session[:password])
   bugs = bugzilla.bugs_for_user(session[:user], params)

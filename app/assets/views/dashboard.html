@@ -1,9 +1,53 @@
 <div class="table-container">
 
-  <section class="container-fluid"> 
+  <section class="container-fluid">
 
-    <div class="row col-xs-5"> 
-      <h2>My Bugzilla's</h2>
+    <div class="row col-xs-5">
+      <h2>My PRs</h2>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Title</th>
+            <th>Repo</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr ng-repeat="pullRequest in dashboard.pullRequests | orderBy:'repo'">
+            <td><a target="_blank" ng-href="{{ pullRequest.url }}">{{ pullRequest.id }}</a></td>
+            <td>{{ pullRequest.title }}</td>
+            <td>{{ pullRequest.repo }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row col-xs-6 col-xs-offset-1">
+      <h2>My Reviews</h2>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Title</th>
+            <th>Repo</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr ng-repeat="review in dashboard.reviews | orderBy:'repo'">
+            <td><a target="_blank" ng-href="{{ review.url }}">{{ review.id }}</a></td>
+            <td>{{ review.title }}</td>
+            <td>{{ review.repo }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row col-xs-6 col-xs-offset-1">
+      <h2>My Bugzillas</h2>
 
       <table class="table table-bordered table-striped">
         <thead>
@@ -31,28 +75,6 @@
             <td><a ng-if="bug.url" ng-href="/dashboard/bugzilla/{{ bug.id }}"><i class="fa fa-copy"></i></a></td>
             <td>{{ bug.status }}</td>
             <td>{{ bug.summary }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="row col-xs-6 col-xs-offset-1"> 
-      <h2>My PR's</h2>
-
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Number</th>
-            <th>Title</th>
-            <th>Repo</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr ng-repeat="pullRequest in dashboard.pullRequests | orderBy:'repo'">
-            <td><a target="_blank" ng-href="{{ pullRequest.url }}">{{ pullRequest.id }}</a></td>
-            <td>{{ pullRequest.title }}</td>
-            <td>{{ pullRequest.repo }}</td>
           </tr>
         </tbody>
       </table>
