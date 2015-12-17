@@ -36,8 +36,8 @@ get '/api/upstream/:project/trackers/update' do
   issues.to_json
 end
 
-get '/api/reviews/update/?:repo?' do
-  pulls = PullRequest.get_reviews(params[:repo])
+get '/api/reviews/update/?:owner?/?:repo?' do
+  pulls = PullRequest.get_reviews(params[:owner],params[:repo])
 
   Review.index(pulls)
 

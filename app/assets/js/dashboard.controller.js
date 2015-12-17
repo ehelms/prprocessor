@@ -33,6 +33,10 @@
             self.pullRequests = pullRequests;
         });
 
+        $http.get('/api/get_reviews').success(function (reviews) {
+            self.reviews = reviews;
+        });
+
         self.pmScore = function (item) {
             return parseInt(item['cf_pm_score']);
         };
