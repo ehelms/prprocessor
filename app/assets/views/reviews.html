@@ -36,7 +36,7 @@
       <tr ng-repeat="review in reviews.reviews | orderBy: '-age'" ng-class="{ 'disabled-row': !review.review }" ng-if="review.review || reviews.showAll">
         <td>{{ review.repo.split('/')[0] }}</td>
         <td>{{ review.repo.split('/')[1] }}</td>
-        <td><a ng-href="https://github.com/theforeman/{{ review.repo }}/pull/{{ review._id }}">{{ review.title }}</a></td>
+        <td><a ng-href="https://github.com/{{ review.repo }}/pull/{{ review.number }}">{{ review.title }}</a></td>
         <td>{{ review.author }}</td>
         <td>{{ review.status }}</td>
         <td>{{ review.age }}</td>
