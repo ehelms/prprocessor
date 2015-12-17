@@ -49,10 +49,14 @@ class PullRequest
   end
 
   # Move to a Repository class?
-  def self.get_reviews(repo=nil)
+  def self.get_reviews(owner=nil,repo=nil)
 
     client   = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'] )
-    repos    = Review.repos if repos.nil?
+    repos    = if (owner.nil? || repo.nil?)
+                 Review.repos
+               else
+                 ["#{owner}/#{repo}"]
+               end
     @reviews = {}
     @now     = Time.now
 
@@ -62,9 +66,9 @@ class PullRequest
       # rationale: if last comment is the author, it's probably in response to
       # review comments and needs a re-review
 
-      pulls = client.pulls("theforeman/#{repo}").map do |pull|
-        comments = client.pull_comments("theforeman/#{repo}",pull.number) +
-                   client.issue_comments("theforeman/#{repo}",pull.number)
+      pulls = client.pulls(repo).map do |pull|
+        comments = client.pull_comments(repo,pull.number) +
+                   client.issue_comments(repo,pull.number)
         comments.reject! {|x| x.user.login == "theforeman-bot" }
         comments.sort_by! {|c| c.created_at }
 
@@ -74,7 +78,7 @@ class PullRequest
         if comments.nil? || comments.size == 0
           status = :no_comments
           review = true
-        elsif client.issue("theforeman/#{repo}",pull.number).labels.map {|l| l.name}.include?("Waiting on contributor")
+        elsif client.issue(repo,pull.number).labels.map {|l| l.name}.include?("Waiting on contributor")
           status = :labelled_as_waiting
           review = false
         elsif comments.last.user.login != pull.user.login
