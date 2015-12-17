@@ -30,6 +30,18 @@ class Review
 
       end
 
+      # Delete old closed PRs
+      db_prs = self.where(repo:repo).map(&:id)
+      (db_prs - repo_data.map{|x| x["id"]}).each do |old_pr|
+
+        begin
+          pull = self.find(old_pr)
+        rescue Mongoid::Errors::DocumentNotFound => e
+        end
+
+        pull.destroy if pull
+      end
+
     end
   end
 end
