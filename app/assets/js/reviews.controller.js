@@ -24,6 +24,7 @@
         Review.fetchReviews().then(function () {
             self.reviews = Review.reviews;
             self.repositories = Review.repositories;
+            self.refreshDate = Review.refreshDate;
         });
 
         self.refresh = function () {

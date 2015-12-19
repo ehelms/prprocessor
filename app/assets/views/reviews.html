@@ -1,14 +1,17 @@
 <div class="fluid-container table-container">
 
   <div class="row">
-    <h2 class="col-sm-2">Reviews</h2>
+    <h2 class="col-xs-2">Reviews</h2>
   </div>
 
 
   <div class="row">
-    <div class="col-xs-2 col-xs-offset-10" style="text-align: right;">
+    <span class="col-xs-3">
+      Last Refresh: {{ reviews.refreshDate | date:'medium'  }}
+    </span>
+    <span class="col-xs-2 col-xs-offset-7" style="text-align: right;">
       <a ng-click="reviews.enableFilters()">Filtering Options</a>
-    </div>
+    </span>
   </div>
   <div class="row">
     <div class="col-xs-12">

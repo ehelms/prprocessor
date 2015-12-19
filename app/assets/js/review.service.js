@@ -29,6 +29,7 @@
             promise.then(function (response) {
                 self.reviews = response.data;
                 self.repositories = extractRepositories(self.reviews);
+                self.refreshDate = self.reviews[0]['refreshed_on'];
             });
 
             return promise;
