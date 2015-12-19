@@ -20,7 +20,7 @@
           <div class="col-xs-12">
             <label><input type="checkbox" ng-model="reviews.showAll"/>Show PRs that Don't Need Review</label>
           </div>
-          <div class="col-xs-2">
+          <div class="col-xs-4">
             <select ng-model="reviews.selectedRepository"
                     ng-change="reviews.repositorySelected(reviews.selectedRepository)"
                     ng-options="option for option in reviews.repositories">
