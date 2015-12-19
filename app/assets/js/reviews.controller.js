@@ -53,7 +53,7 @@
             if (self.selectedRepositories.length === 0) {
                 show = true;
             } else {
-                show = self.selectedRepositories.indexOf(review.repo) !== -1;
+                show = self.selectedRepositories.indexOf(review.repo) === -1;
             }
 
             return show;
