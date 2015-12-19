@@ -1,20 +1,33 @@
 <div class="fluid-container table-container">
 
   <div class="row">
-    <h2 class="col-sm-12">Reviews</h2>
+    <h2 class="col-sm-2">Reviews</h2>
   </div>
 
-  <section class="well">
-    <label><input type="checkbox" ng-model="reviews.showAll"/>Show PRs that Don't Need Review</label>
-  </section>
 
   <div class="row">
-    <div class="col-sm-12">
-      <button class="btn btn-default" style="float:right; margin-bottom: 20px" ng-click="reviews.refresh()">
-        <span ng-show="reviews.refreshing"><i class="fa fa-spinner"></i>Refreshing Review Data...</span>
-        <span ng-show="!reviews.refreshing">Refresh Review Data</span>
-      </button>
-      <span style="float:right;padding: 5px;">Last refreshed on: </span>
+    <div class="col-xs-2 col-xs-offset-10" style="text-align: right;">
+      <a ng-click="reviews.enableFilters()">Filtering Options</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <section class="well" ng-show="reviews.showFilters">
+        <div class="row">
+          <div class="col-xs-12">
+            <label><input type="checkbox" ng-model="reviews.showAll"/>Show PRs that Don't Need Review</label>
+          </div>
+          <div class="col-xs-2">
+            <select ng-model="reviews.selectedRepository"
+                    ng-change="reviews.repositorySelected(reviews.selectedRepository)"
+                    ng-options="option for option in reviews.repositories">
+            </select>
+            <div ng-repeat="repository in reviews.selectedRepositories">
+              <a ng-click="reviews.removeRepository(repository)"><i class="fa fa-minus"></i>{{ repository }}</a>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -33,7 +46,7 @@
     </thead>
 
     <tbody>
-      <tr ng-repeat="review in reviews.reviews | orderBy: '-age'" ng-class="{ 'disabled-row': !review.review }" ng-if="review.review || reviews.showAll">
+      <tr ng-repeat="review in reviews.reviews | filter:reviews.filterByRepository  | orderBy: '-age'" ng-class="{ 'disabled-row': !review.review }" ng-if="review.review || reviews.showAll">
         <td>{{ review.repo.split('/')[0] }}</td>
         <td>{{ review.repo.split('/')[1] }}</td>
         <td><a ng-href="https://github.com/{{ review.repo }}/pull/{{ review.number }}">{{ review.title }}</a></td>

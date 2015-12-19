@@ -17,10 +17,21 @@
     function Review($http) {
         var self = this;
 
-        self.reviews = function (repo, params) {
-            var url = '/api/reviews';
+        self.reviews = [];
+        self.repositories = {};
 
-            return $http.get(url, {params: params});
+        self.fetchReviews = function (params) {
+            var url = '/api/reviews',
+                promise;
+
+            promise = $http.get(url, {params: params});
+
+            promise.then(function (response) {
+                self.reviews = response.data;
+                self.repositories = extractRepositories(self.reviews);
+            });
+
+            return promise;
         };
 
         self.refresh = function (repo) {
@@ -32,6 +43,18 @@
                 });
             });
         };
+
+        function extractRepositories(reviews) {
+            var repositories = [];
+
+            angular.forEach(reviews, function (review) {
+                if (repositories.indexOf(review.repo) === -1) {
+                    repositories.push(review.repo);
+                }
+            });
+
+            return repositories;
+        }
     };
 
 })();
