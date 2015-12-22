@@ -44,3 +44,10 @@ get '/api/reviews/update/?:owner?/?:repo?' do
   content_type :json
   {message: 'success'}.to_json
 end
+
+get '/api/repos/update' do
+  Repo.index
+
+  content_type :json
+  {message: 'success'}.to_json
+end
