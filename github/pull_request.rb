@@ -31,6 +31,7 @@ class PullRequest
 
   def self.get_for_user(username)
     client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'] )
+    client.auto_paginate = true
 
     pulls = client.search_issues("author:#{username} is:open")[:items].collect do |pull|
       repo_splitter = pull.html_url.include?('/pull') ? '/pull' : '/issue'
