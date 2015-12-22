@@ -67,7 +67,6 @@ get '/status' do
   locals[:github_secret] = ENV['GITHUB_SECRET_TOKEN'] ? true : false
   locals[:redmine_key] = ENV['REDMINE_API_KEY'] ? true : false
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
-  locals[:redmine_issue_repos] = redmine_issue_repos
   locals[:rate_limit] = Status.new.rate_limit
 
   erb :status, :locals => locals
