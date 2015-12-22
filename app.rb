@@ -6,6 +6,7 @@ require 'mongoid'
 require File.join(File.dirname(__FILE__), 'redmine/issue')
 require File.join(File.dirname(__FILE__), 'redmine/project')
 require File.join(File.dirname(__FILE__), 'github/pull_request')
+require File.join(File.dirname(__FILE__), 'github/status')
 require File.join(File.dirname(__FILE__), 'jenkins')
 require File.join(File.dirname(__FILE__), 'bugzilla')
 require File.join(File.dirname(__FILE__), 'models/version')
