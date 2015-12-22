@@ -53,7 +53,7 @@ class PullRequest
 
     client   = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'] )
     repos    = if (owner.nil? || repo.nil?)
-                 Review.repos
+                 Repo.repos
                else
                  ["#{owner}/#{repo}"]
                end

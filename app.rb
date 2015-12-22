@@ -12,6 +12,7 @@ require File.join(File.dirname(__FILE__), 'models/version')
 require File.join(File.dirname(__FILE__), 'models/project')
 require File.join(File.dirname(__FILE__), 'models/issue')
 require File.join(File.dirname(__FILE__), 'models/review')
+require File.join(File.dirname(__FILE__), 'models/repo')
 require File.join(File.dirname(__FILE__), 'server/updates')
 require File.join(File.dirname(__FILE__), 'server/auth')
 
@@ -79,6 +80,11 @@ get '/api/reviews/?:repo?' do
 
   content_type :json
   reviews.to_json
+end
+
+get '/api/repos' do
+  content_type :json
+  Repo.repos.to_json
 end
 
 get '/api/upstream/:project/versions' do
