@@ -53,6 +53,7 @@ class PullRequest
   def self.get_reviews(owner=nil,repo=nil)
 
     client   = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'] )
+    client.auto_paginate = true
     repos    = if (owner.nil? || repo.nil?)
                  Repo.repos
                else
