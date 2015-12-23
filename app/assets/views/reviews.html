@@ -51,7 +51,7 @@
     <tbody>
       <tr ng-repeat="review in reviews.reviews | filter:reviews.filterByRepository  | orderBy: '-age'" ng-class="{ 'disabled-row': !review.review }" ng-if="review.review || reviews.showAll">
         <td>{{ review.repo.split('/')[0] }}</td>
-        <td>{{ review.repo.split('/')[1] }}</td>
+        <td><a ng-click="reviews.repositorySelected(review.repo)" title="click to hide">{{ review.repo.split('/')[1] }}</a></td>
         <td><a ng-href="https://github.com/{{ review.repo }}/pull/{{ review.number }}">{{ review.title }}</a></td>
         <td>{{ review.author }}</td>
         <td>{{ review.status }}</td>
