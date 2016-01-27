@@ -28,14 +28,6 @@ set :session_secret, 'super secret'
 Mongoid.load!(File.expand_path(File.join("config/mongoid.yml")))
 puts Mongoid.sessions
 
-before do
-  site_stats = {
-    date: Date.parse(Time.now.to_s).to_s,
-  }
-  site_stats[:github_username] if session[:github_username]
-  SiteStats.update_stats(site_stats)
-end
-
 post '/pull_request' do
   request.body.rewind
   payload_body = request.body.read
@@ -196,6 +188,11 @@ end
 
 
 get %r{^(?!/api*)} do
+  site_stats = {
+    date: Date.parse(Time.now.to_s).to_s,
+  }
+  site_stats[:github_username] if session[:github_username]
+  SiteStats.update_stats(site_stats)
   send_file 'app/index.html'
 end
 
