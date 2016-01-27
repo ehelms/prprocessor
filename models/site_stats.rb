@@ -1,7 +1,7 @@
 class SiteStats
   include Mongoid::Document
 
-  field :data, type: String
+  field :date, type: String
   field :total_visits, type: Integer
   field :unique_visits, type: Hash
 
