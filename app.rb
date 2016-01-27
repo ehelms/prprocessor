@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require 'openssl'
 require 'mongoid'
+require 'date'
 
 require File.join(File.dirname(__FILE__), 'redmine/issue')
 require File.join(File.dirname(__FILE__), 'redmine/project')
@@ -14,6 +15,7 @@ require File.join(File.dirname(__FILE__), 'models/project')
 require File.join(File.dirname(__FILE__), 'models/issue')
 require File.join(File.dirname(__FILE__), 'models/review')
 require File.join(File.dirname(__FILE__), 'models/repo')
+require File.join(File.dirname(__FILE__), 'models/site_stats')
 require File.join(File.dirname(__FILE__), 'server/updates')
 require File.join(File.dirname(__FILE__), 'server/auth')
 
@@ -25,6 +27,14 @@ set :session_secret, 'super secret'
 
 Mongoid.load!(File.expand_path(File.join("config/mongoid.yml")))
 puts Mongoid.sessions
+
+before do
+  site_stats = {
+    date: Date.parse(Time.now.to_s).to_s,
+  }
+  site_stats[:github_username] if session[:github_username]
+  SiteStats.update_stats(site_stats)
+end
 
 post '/pull_request' do
   request.body.rewind
@@ -69,6 +79,9 @@ get '/status' do
   locals[:redmine_key] = ENV['REDMINE_API_KEY'] ? true : false
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
   locals[:rate_limit] = Status.new.rate_limit
+
+  locals[:total_visits] = SiteStats.total_visits_per_day
+  locals[:unique_visits] = SiteStats.unique_users_per_day
 
   erb :status, :locals => locals
 end
